@@ -222,7 +222,17 @@ SELECT COUNT(first_name)
 FROM mentors_emp;
 
 
+-- Recreate the dept_emp table for retirement-eligible employees' count per department,
+-- show department name.
+SELECT cd.count,
+	d.dept_name
+INTO dept_count_name
+FROM count_dept as cd
+	LEFT JOIN departments as d
+		ON cd.dept_no = d.dept_no
+ORDER BY cd.count DESC;
 
+SELECT * FROM dept_count_name;
 
 
 
