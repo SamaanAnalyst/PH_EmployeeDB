@@ -117,3 +117,131 @@ ORDER BY de.dept_no;
 
 -- Check count_dept table.
 SELECT * FROM count_dept;
+SELECT SUM(cd.count)
+FROM count_dept as cd
+
+-- Create an employee information table: 
+-- emp_no, first_name, last_name, gender, to_date, salary.
+SELECT * FROM salaries
+ORDER BY to_date DESC;
+-- The most recent date can't be that far back, so we need to pull employment dates from the dept_emp table again.
+-- Join with salaries tables to get to_date, and salary.
+SELECT e.emp_no,
+	e.first_name,
+	e.last_name, 
+	e.gender,
+	s.salary,
+	de.to_date
+INTO emp_info
+FROM employees as e
+INNER JOIN salaries as s
+ON (e.emp_no = s.emp_no)
+INNER JOIN dept_emp as de
+ON (e.emp_no = de.emp_no)
+WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31')
+AND (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31')
+AND (de.to_date = '9999-01-01');
+-- Check table
+SELECT * FROM emp_info;
+SELECT COUNT (first_name)
+FROM emp_info;
+
+-- Another option to create a table of all employees info using current_emp filtered table.
+-- trial join for employee info.
+SELECT ce.emp_no,
+	ce.first_name,
+	ce.last_name,
+	e.gender,
+	s.salary,
+	ce.to_date
+INTO retire_emp
+FROM current_emp AS ce
+	INNER JOIN employees AS e
+		ON (ce.emp_no = e.emp_no)
+	INNER JOIN salaries AS s
+		ON (ce.emp_no = s.emp_no);
+-- Check trial table.
+-- the only difference here is that the (to_date) column is ordered by DESC from the current_emp table. 
+SELECT * FROM retire_emp;
+SELECT COUNT(first_name)
+FROM retire_emp;
+
+-- List of managers per department.
+SELECT dm.dept_no,
+	d.dept_name,
+	dm.emp_no,
+	ce.last_name,
+	ce.first_name,
+	dm.from_date,
+	dm.to_date
+INTO manager_info
+FROM dept_manager as dm
+	INNER JOIN departments as d
+		ON (dm.dept_no = d.dept_no)
+	INNER JOIN current_emp AS ce
+		ON (dm.emp_no = ce.emp_no);
+-- Check table
+SELECT * FROM manager_info;	
+
+
+-- Add department info to the current_emp table. 
+SELECT ce.emp_no,
+	ce.first_name,
+	ce.last_name,
+	d.dept_name
+INTO dept_info
+FROM current_emp as ce
+INNER JOIN dept_emp AS de
+ON (ce.emp_no = de.emp_no)
+INNER JOIN departments AS d
+ON (de.dept_no = d.dept_no);
+-- Check table
+SELECT * FROM dept_info;	
+SELECT COUNT(first_name)
+FROM dept_info;
+
+
+-- Create a table of current, retirement-eligible employees in the Sales department.
+SELECT * 
+INTO sales_emp
+FROM dept_info AS di
+WHERE (di.dept_name = 'Sales');
+-- Check sales retiring emp table.
+SELECT * FROM sales_emp;
+SELECT COUNT(first_name) 
+FROM sales_emp;
+
+-- Create a table of current, retirement-eligible employees for Sales and Development teams.
+SELECT *
+INTO mentors_emp
+FROM dept_info
+WHERE dept_name IN ('Sales', 'Development');
+-- Check mentors_emp table.
+SELECT * FROM mentors_emp;
+SELECT COUNT(first_name) 
+FROM mentors_emp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
