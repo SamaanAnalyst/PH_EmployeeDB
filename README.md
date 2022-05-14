@@ -52,7 +52,7 @@ The tasks in this project require transforming the employees' information from C
    ![Retirement-eligible employees' count per department](./Images/count_retiring_dept_name.png)
 
 
-### Challange Deliverables
+### Challenge Deliverables
 1. When we looked at titles given to the retirement-eligible employees who were born between 1952 and 1955, we have found <br>
    a list of (133,776) titles assigned to them over their employment life.<br>
       - Their records, including names, titles, and titles' dates, can be found in the following CSV file:<br> [retirement_titles.csv](https://github.com/Magzzie/Pewlett_Hackard_Analysis/blob/main/Data/retirement_titles.csv)
